@@ -1,0 +1,928 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Font faces (self-hosted) ─────────────────────────────────── */
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Google Fonts fallback — loads when local woff2 not available ── */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap");
+
+/* ─── Design tokens ─────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* Background scale — Charcoal Black (#0D0D0D) */
+    --background: 0.08 0.000 0;
+    --foreground: 0.92 0.003 95;
+
+    /* Card / Box Background: #222222 */
+    --card: 0.14 0.000 0;
+    --card-foreground: 0.92 0.003 95;
+
+    --popover: 0.14 0.000 0;
+    --popover-foreground: 0.92 0.003 95;
+
+    /* Primary Gold (#C6A75E) — main accent */
+    --primary: 0.72 0.11 75;
+    --primary-foreground: 0.08 0.000 0;
+
+    /* Royal Gold (#D4AF37) — secondary accent */
+    --secondary: 0.75 0.13 80;
+    --secondary-foreground: 0.08 0.000 0;
+
+    --muted: 0.12 0.000 0;
+    --muted-foreground: 0.61 0.002 0;
+
+    --accent: 0.72 0.11 75;
+    --accent-foreground: 0.08 0.000 0;
+
+    --destructive: 0.55 0.22 27;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Deep Gold border/divider (#8C6B1F) */
+    --border: 0.46 0.07 72 / 18%;
+    --input: 0.46 0.07 72 / 15%;
+    --ring: 0.72 0.11 75;
+
+    /* Brand-specific gold tokens */
+    /* Primary Gold Accent (#C6A75E) */
+    --gold: 0.72 0.11 75;
+    /* Royal Gold (#D4AF37) */
+    --gold-bright: 0.75 0.13 80;
+    /* Muted Gold hover (#B8963A) */
+    --gold-muted: 0.65 0.10 72;
+    /* Deep Gold borders (#8C6B1F) */
+    --gold-dim: 0.46 0.07 68;
+
+    /* Electric blue kept for backward compat but maps to gold */
+    --electric-blue: 0.72 0.11 75;
+    --electric-blue-muted: 0.65 0.10 72;
+
+    /* Brand red — kept for live badge only */
+    --brand-red: 0.55 0.22 27;
+
+    /* Surface scale: pure black / dark charcoal tones */
+    /* Primary Background: #0D0D0D */
+    --surface-1: 0.08 0.000 0;
+    /* Section Background: #1A1A1A */
+    --surface-2: 0.11 0.000 0;
+    /* Card / Box Background: #222222 */
+    --surface-3: 0.14 0.000 0;
+    --surface-4: 0.17 0.000 0;
+
+    /* Glass card tokens — dark gold glass */
+    --glass-bg: oklch(0.11 0.000 0 / 0.88);
+    --glass-border: oklch(0.72 0.11 75 / 0.12);
+    --glass-border-hover: oklch(var(--gold) / 0.38);
+
+    --chart-1: 0.72 0.11 75;
+    --chart-2: 0.75 0.13 80;
+    --chart-3: 0.62 0.12 160;
+    --chart-4: 0.55 0.22 27;
+    --chart-5: 0.55 0.15 300;
+
+    --sidebar: 0.08 0.000 0;
+    --sidebar-foreground: 0.92 0.003 95;
+    --sidebar-primary: 0.72 0.11 75;
+    --sidebar-primary-foreground: 0.08 0.000 0;
+    --sidebar-accent: 0.11 0.000 0;
+    --sidebar-accent-foreground: 0.92 0.003 95;
+    --sidebar-border: 0.46 0.07 72 / 18%;
+    --sidebar-ring: 0.72 0.11 75;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Cabinet Grotesk", "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: oklch(var(--surface-1));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(var(--gold-dim));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--gold-muted));
+  }
+}
+
+/* ─── Keyframe animations ───────────────────────────────────────── */
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 24px oklch(var(--gold) / 0.35),
+      0 0 48px oklch(var(--gold) / 0.18),
+      0 0 0 1px oklch(var(--gold) / 0.22);
+  }
+  50% {
+    box-shadow:
+      0 0 36px oklch(var(--gold) / 0.60),
+      0 0 72px oklch(var(--gold) / 0.30),
+      0 0 0 1px oklch(var(--gold) / 0.40);
+  }
+}
+
+@keyframes glow-pulse-blue {
+  0%, 100% {
+    box-shadow:
+      0 0 24px rgba(31,78,216,0.45),
+      0 0 48px rgba(31,78,216,0.22),
+      0 0 0 1px rgba(31,78,216,0.28);
+  }
+  50% {
+    box-shadow:
+      0 0 36px rgba(31,78,216,0.70),
+      0 0 72px rgba(31,78,216,0.38),
+      0 0 0 1px rgba(31,78,216,0.50);
+  }
+}
+
+@keyframes glow-pulse-gold {
+  0%, 100% {
+    box-shadow:
+      0 0 24px rgba(212,175,55,0.45),
+      0 0 48px rgba(212,175,55,0.22),
+      0 0 0 1px rgba(212,175,55,0.28);
+  }
+  50% {
+    box-shadow:
+      0 0 36px rgba(212,175,55,0.70),
+      0 0 72px rgba(212,175,55,0.38),
+      0 0 0 1px rgba(212,175,55,0.50);
+  }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ─── Utility classes ───────────────────────────────────────────── */
+@layer utilities {
+  /* Gold brand utilities */
+  .text-gold {
+    color: oklch(var(--gold));
+  }
+
+  .text-electric-blue {
+    color: oklch(var(--gold));
+  }
+
+  .bg-gold {
+    background-color: oklch(var(--gold));
+  }
+
+  .bg-electric-blue {
+    background-color: oklch(var(--gold));
+  }
+
+  .border-gold {
+    border-color: oklch(var(--gold));
+  }
+
+  .border-electric-blue {
+    border-color: oklch(var(--gold));
+  }
+
+  /* Brand red — sparingly for live badge */
+  .text-brand-red {
+    color: oklch(var(--brand-red));
+  }
+
+  .bg-brand-red {
+    background-color: oklch(var(--brand-red));
+  }
+
+  /* Light section background — slightly lifted charcoal */
+  .bg-brand-blue-light {
+    background-color: oklch(var(--surface-3));
+  }
+
+  .bg-surface-1 {
+    background-color: oklch(var(--surface-1));
+  }
+
+  .bg-surface-2 {
+    background-color: oklch(var(--surface-2));
+  }
+
+  .bg-surface-3 {
+    background-color: oklch(var(--surface-3));
+  }
+
+  .bg-surface-4 {
+    background-color: oklch(var(--surface-4));
+  }
+
+  .heading-display {
+    font-family: "Bricolage Grotesque", "Syne", system-ui, -apple-system, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-kerning: normal;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    font-optical-sizing: auto;
+  }
+
+  .heading-section {
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-kerning: normal;
+    font-feature-settings: "kern" 1, "liga" 1;
+    font-optical-sizing: auto;
+  }
+
+  /* Eyebrow labels — Gold accent */
+  .eyebrow {
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: oklch(var(--gold));
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background: oklch(var(--gold) / 0.7);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  /* Gold shimmer gradient */
+  .text-gradient-gold {
+    background: linear-gradient(
+      118deg,
+      oklch(0.50 0.08 70) 0%,
+      oklch(0.65 0.11 75) 20%,
+      oklch(0.78 0.14 80) 42%,
+      oklch(0.82 0.15 82) 50%,
+      oklch(0.78 0.14 80) 58%,
+      oklch(0.65 0.11 75) 80%,
+      oklch(0.50 0.08 70) 100%
+    );
+    background-size: 280% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 6s linear infinite;
+  }
+
+  /* btn-gold — Gold gradient button (non-primary CTAs) */
+  .btn-gold {
+    background: linear-gradient(
+      145deg,
+      #D4AF37 0%,
+      #C6A75E 55%,
+      #B8963A 100%
+    );
+    color: #0D0D0D;
+    font-weight: 800;
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.055em;
+    transition: all 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.18),
+      0 2px 8px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(212,175,55,0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-gold::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.10) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+  }
+
+  .btn-gold:hover {
+    box-shadow:
+      0 0 44px rgba(212,175,55,0.45),
+      0 8px 32px rgba(212,175,55,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      0 0 0 1px rgba(212,175,55,0.55);
+    transform: translateY(-4px);
+    background: linear-gradient(
+      145deg,
+      #E5C055 0%,
+      #D4AF37 55%,
+      #C6A75E 100%
+    );
+  }
+
+  .btn-blue {
+    background: linear-gradient(145deg, #2563EB 0%, #1F4ED8 55%, #1D44C0 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.18),
+      0 2px 8px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(31,78,216,0.35);
+  }
+
+  .btn-blue:hover {
+    box-shadow: 0 0 24px rgba(31,78,216,0.55), 0 4px 20px rgba(31,78,216,0.30);
+    transform: translateY(-2px);
+    background: linear-gradient(145deg, #3B82F6 0%, #2563EB 55%, #1F4ED8 100%);
+  }
+
+  /* btn-blue-cta — ONLY for "Book a Strategy Call" (logo blue #1F4ED8) */
+  .btn-blue-cta {
+    background: linear-gradient(
+      145deg,
+      #2563EB 0%,
+      #1F4ED8 55%,
+      #1D44C0 100%
+    );
+    color: #ffffff;
+    font-weight: 800;
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.055em;
+    transition: all 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.18),
+      0 2px 8px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(31,78,216,0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-blue-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.10) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+  }
+
+  .btn-blue-cta:hover {
+    box-shadow:
+      0 0 44px rgba(31,78,216,0.55),
+      0 8px 32px rgba(31,78,216,0.30),
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      0 0 0 1px rgba(31,78,216,0.55);
+    transform: translateY(-4px);
+    background: linear-gradient(
+      145deg,
+      #3B82F6 0%,
+      #2563EB 55%,
+      #1F4ED8 100%
+    );
+  }
+
+  /* btn-outline-gold — True gold outline button */
+  .btn-outline-gold {
+    border: 1.5px solid rgba(212,175,55,0.65);
+    color: #D4AF37;
+    font-weight: 700;
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.05em;
+    background: rgba(212,175,55,0.06);
+    backdrop-filter: blur(8px);
+    transition: all 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-outline-gold:hover {
+    background: rgba(212,175,55,0.14);
+    border-color: rgba(212,175,55,0.90);
+    box-shadow:
+      0 0 24px rgba(212,175,55,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    color: #E5C055;
+  }
+
+  /* btn-gold-gradient — All non-"Book a Strategy Call" buttons */
+  .btn-gold-gradient {
+    background: linear-gradient(145deg, #D4AF37 0%, #C6A75E 55%, #B8963A 100%);
+    color: #0D0D0D;
+    font-weight: 800;
+    font-family: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.055em;
+    transition: all 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.18),
+      0 2px 8px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(212,175,55,0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-gold-gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.10) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .btn-gold-gradient:hover {
+    box-shadow:
+      0 0 44px rgba(212,175,55,0.45),
+      0 8px 32px rgba(212,175,55,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      0 0 0 1px rgba(212,175,55,0.55);
+    transform: translateY(-4px);
+    background: linear-gradient(145deg, #E5C055 0%, #D4AF37 55%, #C6A75E 100%);
+  }
+
+  /* ── True glass-morphism card ──────────────────────────────── */
+  .card-premium {
+    background: linear-gradient(
+      160deg,
+      oklch(0.14 0.000 0 / 0.95) 0%,
+      oklch(0.11 0.000 0 / 0.98) 100%
+    );
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid oklch(var(--gold-dim) / 0.18);
+    box-shadow:
+      inset 0 1px 0 oklch(var(--gold) / 0.07),
+      inset 0 -1px 0 oklch(0.0 0 0 / 0.20),
+      0 4px 24px oklch(0.0 0 0 / 0.50),
+      0 1px 3px oklch(0.0 0 0 / 0.30);
+    transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Subtle top-edge highlight */
+  .card-premium::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      oklch(var(--gold) / 0.04) 0px,
+      transparent 48px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Left gold accent spine — revealed on hover */
+  .card-premium::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 16%;
+    bottom: 16%;
+    width: 2px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      oklch(var(--gold) / 0.65),
+      transparent
+    );
+    transition: opacity 0.32s ease;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .card-premium:hover::after {
+    opacity: 1;
+  }
+
+  .card-premium:hover {
+    border-color: oklch(var(--gold) / 0.35);
+    background: linear-gradient(
+      160deg,
+      oklch(0.16 0.000 0 / 0.96) 0%,
+      oklch(0.13 0.000 0 / 0.99) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 oklch(var(--gold) / 0.10),
+      inset 0 -1px 0 oklch(0.0 0 0 / 0.15),
+      0 0 0 1px oklch(var(--gold) / 0.16),
+      0 16px 56px oklch(0.0 0 0 / 0.65),
+      0 0 48px oklch(var(--gold) / 0.12),
+      0 2px 8px oklch(0.0 0 0 / 0.40);
+    transform: translateY(-6px);
+  }
+
+  /* Dark service card for light-ish section */
+  .card-service-light {
+    background: oklch(0.14 0.000 0);
+    border: 1px solid oklch(var(--gold-dim) / 0.20);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 12px oklch(0.0 0 0 / 0.20), 0 1px 3px oklch(0.0 0 0 / 0.10);
+    transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card-service-light:hover {
+    box-shadow: 0 8px 32px oklch(var(--gold) / 0.14), 0 2px 8px oklch(0.0 0 0 / 0.20);
+    border-color: oklch(var(--gold) / 0.4);
+    transform: translateY(-4px);
+  }
+
+  .radar-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid oklch(var(--gold) / 0.35);
+    background: transparent;
+    animation: radar-pulse 3s cubic-bezier(0.2, 0.5, 0.5, 1) infinite;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.8s ease forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease forwards;
+  }
+
+  /* Section dividers — Gold */
+  .section-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 0 auto 1.75rem;
+    width: fit-content;
+  }
+  .section-divider::before {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, transparent, oklch(var(--gold) / 0.9), transparent);
+    box-shadow: 0 0 8px oklch(var(--gold) / 0.4);
+  }
+  .section-divider::after {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 1px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, transparent, oklch(var(--gold-muted) / 0.6), transparent);
+  }
+
+  .section-divider-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 1.75rem;
+    width: fit-content;
+  }
+  .section-divider-left::before {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, oklch(var(--gold) / 0.9), transparent);
+    box-shadow: 0 0 8px oklch(var(--gold) / 0.35);
+  }
+  .section-divider-left::after {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 1px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, oklch(var(--gold-muted) / 0.6), transparent);
+  }
+
+  .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.06;
+  }
+
+  .glow-gold {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  .glow-blue {
+    animation: glow-pulse-blue 3s ease-in-out infinite;
+  }
+
+  .glow-gold-gradient {
+    animation: glow-pulse-gold 3s ease-in-out infinite;
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
+
+  .opacity-0-init {
+    opacity: 0;
+  }
+
+  /* Section blend helper — adds a hairline fade at the bottom edge for
+     extra-smooth section transitions. Apply to any section that needs it. */
+  .section-blend {
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.02);
+  }
+
+  /* Accordion keyframes (from shadcn) */
+  @keyframes accordion-down {
+    from { height: 0 }
+    to { height: var(--radix-accordion-content-height) }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height) }
+    to { height: 0 }
+  }
+}
+
+/* ─── Performance hints ──────────────────────────────────── */
+.animate-float-y {
+  will-change: transform;
+}
+canvas {
+  will-change: transform;
+}
+.group:hover {
+  will-change: transform;
+}
+/* Images load smoothly */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+
+/* ── MOBILE OPTIMISATION ───────────────────────────────────────────── */
+/* Prevent text size inflation on iOS */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Minimum tap target size 44px (Apple HIG standard) */
+a, button, [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Better touch scrolling */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent horizontal overflow on mobile */
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Smoother focus rings on mobile */
+:focus-visible {
+  outline: 2px solid rgba(212,175,55,0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Mobile font sizes — ensure minimum 16px to avoid iOS zoom */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+
+  /* Better button spacing on mobile */
+  .btn-gold-gradient, .btn-outline-gold, .btn-blue-cta {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    min-height: 48px;
+  }
+
+  /* Hero headline scales properly */
+  .heading-display {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Tablet optimisation */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* High-density / retina screens — ensure images stay crisp */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* ── iOS SAFE AREA (notch / Dynamic Island) ────────────────────────── */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ── EXTRA MOBILE POLISH ───────────────────────────────────────────── */
+/* Prevent double-tap zoom on buttons */
+button, a {
+  touch-action: manipulation;
+}
+
+/* Smooth momentum scrolling on iOS */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent content jump when scrollbar appears/disappears */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Fix for iPhone SE (320px) — ensure no content cuts off */
+@media (max-width: 375px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .heading-display {
+    font-size: clamp(2.4rem, 11vw, 4rem) !important;
+  }
+}
+
+/* Fix bottom nav safe area on iPhone */
+footer {
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+/* Floating WhatsApp button — clear of home bar */
+.whatsapp-float {
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 12px)) !important;
+}
+
+/* -- CRISP TEXT RENDERING -- */
+h1, h2, h3, h4, h5, h6, p, span, a, button, li {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+/* Prevent subpixel rendering artifacts */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* -- PAINT PERFORMANCE -- */
+/* Sections below fold render lazily */
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+/* Override for hero which is above fold */
+#hero {
+  content-visibility: visible;
+}
