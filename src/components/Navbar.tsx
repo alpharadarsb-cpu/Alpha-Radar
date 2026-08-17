@@ -43,7 +43,7 @@ export function Navbar() {
         <Link to="/" className="flex items-center gap-2 group transition-opacity duration-200 hover:opacity-85 justify-self-start">
           {/* Logo mark — 256px source, crisp on retina at 40px display height */}
           <img
-            src="/assets/generated/alpha-radar-logo-mark.png"
+            src="/assets/generated/alpha-radar-logo-mark.svg"
             alt="Alpha Radar — Business Coaching, Consulting & Corporate Learning"
             fetchPriority="high"
             className="block shrink-0"

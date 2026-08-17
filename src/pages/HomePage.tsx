@@ -1348,10 +1348,8 @@ function WhyThisIsImportantSection() {
 }
 
 // --- FAQ section --------------------------------------------------------------
-function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const faqs = [
+const faqsBySegment: Record<Segment, Array<{ question: string; answer: string }>> = {
+  sme: [
     {
       question: "How long does coaching engagement typically last?",
       answer:
@@ -1382,7 +1380,80 @@ function FAQSection() {
       answer:
         "Yes. All Alpha Radar clients receive ongoing support between sessions via WhatsApp and email. We're your strategic partner, not just your weekly coach.",
     },
-  ];
+  ],
+  corporate: [
+    {
+      question: "How long does a corporate training program run?",
+      answer:
+        "Our corporate programmes are designed as focused 1-2 day engagements -- long enough to drive real behavioural and skill change, short enough to respect your teams' time and business priorities.",
+    },
+    {
+      question: "Who should attend these programmes?",
+      answer:
+        "Our corporate programmes are built for a wide range of levels -- Board Members, CXOs, Business Heads, Functional Heads, Department Heads, Branch Managers, Team Leaders and Sales and Customer Service teams. Each session is tuned to the seniority and context of the audience in the room.",
+    },
+    {
+      question: "Is training delivered in person or online?",
+      answer:
+        "Both, and every combination in between. We deliver via classroom, virtual and hybrid formats depending on what works best for your teams and locations.",
+    },
+    {
+      question: "What does a training session actually include?",
+      answer:
+        "Every programme is backed by professionally designed slides and delivered through an interactive, practical and business-focused methodology -- not passive lectures. Participants work through real scenarios relevant to their roles, not generic theory.",
+    },
+    {
+      question: "Can programmes be customised for our organisation?",
+      answer:
+        "Yes. While each programme has a proven core structure, we tailor examples, case studies and emphasis to your industry, team seniority and the specific challenges your organisation is facing.",
+    },
+    {
+      question: "How do we book a programme for our team?",
+      answer:
+        "Reach out to us on your preferred channel -- WhatsApp, phone or email. We'll understand your team's needs and objectives first, then recommend the right programme and schedule.",
+    },
+  ],
+  university: [
+    {
+      question: "What kind of sessions do you offer for universities and institutions?",
+      answer:
+        "We deliver industry-led masterclasses, bootcamps and guest lectures that bridge classroom learning with industry-ready, employable skills -- built for MBA, BBA and Engineering students.",
+    },
+    {
+      question: "Are sessions delivered on campus or online?",
+      answer:
+        "Both -- we offer sessions offline on campus as well as online, so institutions can choose the format that best fits their calendar and student reach.",
+    },
+    {
+      question: "Who are these sessions designed for?",
+      answer:
+        "Primarily MBA, BBA and Engineering students preparing for client-facing or leadership-track roles, as well as faculty looking for industry-relevant content for professional development electives.",
+    },
+    {
+      question: "What does a typical session look like?",
+      answer:
+        "Sessions are built around professionally designed slides and an interactive, practical and business-focused methodology -- students work through real business scenarios rather than sitting through one-way lectures.",
+    },
+    {
+      question: "Can sessions be tailored to our curriculum or department?",
+      answer:
+        "Yes. We work with institutions to align session content with specific courses, electives or placement-readiness goals, rather than delivering a one-size-fits-all masterclass.",
+    },
+    {
+      question: "How can our institution arrange a session?",
+      answer:
+        "Reach out to us on your preferred channel -- WhatsApp, phone or email -- with your institution's goals and student profile, and we'll help design the right masterclass, bootcamp or guest lecture.",
+    },
+  ],
+};
+
+function FAQSection({ activeSegment }: { activeSegment: Segment }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const faqs = faqsBySegment[activeSegment];
+
+  useEffect(() => {
+    setOpenIndex(null);
+  }, [activeSegment]);
 
   return (
     <RevealSection
@@ -1848,7 +1919,7 @@ export function HomePage() {
         setActiveSegment={setActiveSegment}
       />
       <WhyThisIsImportantSection />
-      <FAQSection />
+      <FAQSection activeSegment={activeSegment} />
       <FinalCTASection />
       <ContactSection />
     </main>

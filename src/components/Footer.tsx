@@ -16,7 +16,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4 group transition-opacity duration-200 hover:opacity-80">
               <img
-                src="/assets/generated/alpha-radar-logo-mark.png"
+                src="/assets/generated/alpha-radar-logo-mark.svg"
                 alt="Alpha Radar — Business Coaching, Consulting & Corporate Learning"
                 style={{ height: "38px", width: "auto", filter: "drop-shadow(0 0 5px rgba(212,175,55,0.22))" }}
               />
