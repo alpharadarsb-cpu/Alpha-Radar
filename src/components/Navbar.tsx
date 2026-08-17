@@ -5,12 +5,22 @@ import { useEffect, useState } from "react";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState(() =>
+    typeof window !== "undefined" ? window.location.hash : "",
+  );
   const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Keep the active nav item in sync with back/forward nav and manual hash edits
+  useEffect(() => {
+    const onHashChange = () => setActiveHash(window.location.hash);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
   // Close mobile menu on route change
@@ -20,11 +30,14 @@ export function Navbar() {
   }, [router.state.location.pathname]);
 
   const pathname = router.state.location.pathname;
-  const navLinkClass =
-    "font-heading text-base font-semibold text-white/70 hover:text-white transition-colors duration-200 tracking-wider [&.active]:text-gold relative group";
-  const hashLinkClass = (hash: string) => {
-    const isActive = typeof window !== "undefined" && window.location.hash === hash;
+  const isHome = pathname === "/";
+  const navLinkClass = (hash: string) => {
+    const isActive = isHome && activeHash === hash;
     return `font-heading text-base font-semibold transition-colors duration-200 tracking-wider relative group ${isActive ? "text-gold" : "text-white/70 hover:text-white"}`;
+  };
+  const mobileNavLinkClass = (hash: string) => {
+    const isActive = isHome && activeHash === hash;
+    return `block font-heading text-lg font-semibold transition-colors py-3 border-b border-white/5 ${isActive ? "text-gold" : "text-white/80 hover:text-gold"}`;
   };
 
   return (
@@ -86,29 +99,29 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav — absolutely centered in the header */}
-        <nav className="hidden md:flex items-center gap-7 justify-self-center">
-          <Link to="/" className={navLinkClass}>
+        <nav className="hidden xl:flex items-center gap-7 justify-self-center">
+          <Link to="/" className={navLinkClass("")} onClick={() => setActiveHash("")}>
             <span className="relative">
               Overview
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
             </span>
           </Link>
 
-          <a href="/#about" className={navLinkClass}>
+          <a href="/#about" className={navLinkClass("#about")} onClick={() => setActiveHash("#about")}>
             <span className="relative">
               Our Story
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
             </span>
           </a>
 
-          <a href="/#programs" className={navLinkClass}>
+          <a href="/#programs" className={navLinkClass("#programs")} onClick={() => setActiveHash("#programs")}>
             <span className="relative">
               Programs
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
             </span>
           </a>
 
-          <a href="/#contact" className={navLinkClass}>
+          <a href="/#contact" className={navLinkClass("#contact")} onClick={() => setActiveHash("#contact")}>
             <span className="relative">
               Connect With Us
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
@@ -119,7 +132,7 @@ export function Navbar() {
         </nav>
 
         {/* CTA */}
-        <div className="hidden md:flex items-center gap-4 justify-self-end">
+        <div className="hidden xl:flex items-center gap-4 justify-self-end">
           <div className="relative">
             <a
               href="/#contact"
@@ -141,7 +154,7 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden text-white/80 hover:text-gold transition-colors justify-self-end p-2.5 -m-2.5"
+          className="xl:hidden text-white/80 hover:text-gold transition-colors justify-self-end p-2.5 -m-2.5"
           style={{ gridColumn: "3" }}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
@@ -154,33 +167,37 @@ export function Navbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div
-          className="md:hidden backdrop-blur-lg border-t border-white/5 px-6 py-6 space-y-1"
+          className="xl:hidden backdrop-blur-lg border-t border-white/5 px-6 py-6 space-y-1"
           style={{ background: "rgba(0,0,0,0.96)" }}
         >
           <Link
             to="/"
-            className="block font-heading text-lg font-semibold text-white/80 hover:text-gold transition-colors py-3 border-b border-white/5"
+            className={mobileNavLinkClass("")}
+            onClick={() => setActiveHash("")}
           >
             Overview
           </Link>
 
           <a
             href="/#about"
-            className="block font-heading text-lg font-semibold text-white/80 hover:text-gold transition-colors py-3 border-b border-white/5"
+            className={mobileNavLinkClass("#about")}
+            onClick={() => setActiveHash("#about")}
           >
             Our Story
           </a>
 
           <a
             href="/#programs"
-            className="block font-heading text-lg font-semibold text-white/80 hover:text-gold transition-colors py-3 border-b border-white/5"
+            className={mobileNavLinkClass("#programs")}
+            onClick={() => setActiveHash("#programs")}
           >
             Programs
           </a>
 
           <a
             href="/#contact"
-            className="block font-heading text-lg font-semibold text-white/80 hover:text-gold transition-colors py-3 border-b border-white/5"
+            className={mobileNavLinkClass("#contact")}
+            onClick={() => setActiveHash("#contact")}
           >
             Connect With Us
           </a>

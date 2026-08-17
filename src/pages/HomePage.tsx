@@ -505,7 +505,7 @@ function HeroSection() {
 
         {/* Main headline -- "Alpha" in Royal Gold */}
         <h1
-          className="heading-display text-[clamp(2.6rem,5.5vw,4.8rem)] text-white mb-6 animate-fade-up" data-smooth="true"
+          className="heading-display text-[clamp(1.9rem,8vw,4.8rem)] text-white mb-6 animate-fade-up" data-smooth="true"
           style={{
             WebkitFontSmoothing: "antialiased" as const,
             MozOsxFontSmoothing: "grayscale" as const,
@@ -676,7 +676,7 @@ function AboutSection() {
             </p>
 
             {/* Heading */}
-            <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl text-white mb-4 leading-tight">
+            <h2 className="heading-display text-[clamp(1.7rem,6vw,3.75rem)] text-white mb-4 leading-tight">
               Driven by Results
               <span className="block">Built on Experience</span>
             </h2>
@@ -801,7 +801,7 @@ function WhoWeHelpSection({
         <div className="text-center mb-16">
           <div className="section-divider" />
           <p className="eyebrow mb-4">Whom We Serve</p>
-          <h2 className="heading-display text-5xl md:text-6xl lg:text-7xl text-white mb-5">
+          <h2 className="heading-display text-[clamp(2rem,8vw,4.8rem)] text-white mb-5">
             Three Ways We Partner
           </h2>
           <p className="text-white/60 max-w-xl mx-auto font-body text-base">
@@ -1150,7 +1150,7 @@ function WhyThisIsImportantSection() {
 
         {/* Heading */}
         <h2
-          className="heading-display text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight"
+          className="heading-display text-[clamp(2rem,8vw,4.8rem)] mb-6 leading-tight"
           style={{ color: "#EAEAEA" }}
         >
           Why This Is <span style={{ color: "#D4AF37" }}>Important</span>
@@ -1680,7 +1680,7 @@ function ContactSection() {
         <div className="text-center mb-16">
           <div className="section-divider" />
           <p className="eyebrow mb-4">Direct Access</p>
-          <h2 className="heading-display text-5xl md:text-6xl lg:text-7xl text-white mb-5">
+          <h2 className="heading-display text-[clamp(2rem,8vw,4.8rem)] text-white mb-5">
             Let's Talk Business
           </h2>
           <p className="text-white/60 max-w-xl mx-auto font-body text-base">

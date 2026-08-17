@@ -177,7 +177,7 @@ export function EliteGrowthSystemPage() {
             </div>
 
             <h1
-              className="heading-display text-[clamp(2.8rem,7vw,5.5rem)] text-white mb-6 animate-fade-up"
+              className="heading-display text-[clamp(2rem,9vw,5.5rem)] text-white mb-6 animate-fade-up"
               style={{
                 animationDelay: "0.1s",
                 opacity: 0,

@@ -889,9 +889,6 @@ html {
     padding-left: 16px;
     padding-right: 16px;
   }
-  .heading-display {
-    font-size: clamp(2.4rem, 11vw, 4rem) !important;
-  }
 }
 
 /* Fix bottom nav safe area on iPhone */
