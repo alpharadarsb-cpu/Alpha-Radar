@@ -10,6 +10,24 @@ const serviceHeroImages: Record<string, string> = {
   "performance-coaching":      "/assets/generated/svc-hero-performance-coaching.jpg",
   "systems-scaling":           "/assets/generated/svc-hero-systems-scaling.jpg",
   "execution-accountability":  "/assets/generated/svc-hero-execution-accountability.jpg",
+  "family-business":           "/assets/generated/svc-hero-family-business.webp",
+  "leading-in-a-vuca-bani-world":                             "/assets/generated/svc-hero-leading-in-a-vuca-bani-world.webp",
+  "perform-or-perish-high-performance-team-leaders":          "/assets/generated/svc-hero-perform-or-perish-high-performance-team-leaders.webp",
+  "breaking-organizational-complacency":                      "/assets/generated/svc-hero-breaking-organizational-complacency.webp",
+  "customer-centricity-to-customer-intelligence":              "/assets/generated/svc-hero-customer-centricity-to-customer-intelligence.webp",
+  "complaint-intelligence-framework":                          "/assets/generated/svc-hero-complaint-intelligence-framework.webp",
+  "reading-minds-and-leading-people":                          "/assets/generated/svc-hero-reading-minds-and-leading-people.webp",
+  "the-art-of-verbal-communication":                           "/assets/generated/svc-hero-the-art-of-verbal-communication.webp",
+  "turning-crisis-into-competitive-advantage":                 "/assets/generated/svc-hero-turning-crisis-into-competitive-advantage.webp",
+  "insight-to-impact-frontline-intelligence":                  "/assets/generated/svc-hero-insight-to-impact-frontline-intelligence.webp",
+  "corporate-ready-classroom-to-corporate":                    "/assets/generated/svc-hero-corporate-ready-classroom-to-corporate.webp",
+  "business-conversations-executive-communication-mastery":    "/assets/generated/svc-hero-business-conversations-executive-communication-mastery.webp",
+  "from-mba-to-executive-leader":                              "/assets/generated/svc-hero-from-mba-to-executive-leader.webp",
+  "win-every-customer-every-time":                             "/assets/generated/svc-hero-win-every-customer-every-time.webp",
+  "from-insight-to-impact-relationship-management":            "/assets/generated/svc-hero-from-insight-to-impact-relationship-management.webp",
+  "sales-mastery-science-and-art":                             "/assets/generated/svc-hero-sales-mastery-science-and-art.webp",
+  "5s-sales-excellence":                                       "/assets/generated/svc-hero-5s-sales-excellence.webp",
+  "heir-to-leader-next-generation-business-leaders":           "/assets/generated/svc-hero-heir-to-leader-next-generation-business-leaders.webp",
 };
 
 interface ServicePageProps {
@@ -81,13 +99,23 @@ export function ServicePage({ service }: ServicePageProps) {
 
         <div className="relative z-10 container max-w-7xl mx-auto px-6">
           {/* Breadcrumb */}
-          <p style={{ fontSize: "12px", marginBottom: "2rem", whiteSpace: "nowrap", letterSpacing: "0.5px" }}>
-            <a href="/" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Home</a>
-            <span style={{ color: "rgba(255,255,255,0.2)", margin: "0 8px" }}>&rsaquo;</span>
-            <span style={{ color: "rgba(255,255,255,0.3)" }}>Programs</span>
-            <span style={{ color: "rgba(255,255,255,0.2)", margin: "0 8px" }}>&rsaquo;</span>
-            <span style={{ color: "rgba(255,255,255,0.6)" }}>{service.title}</span>
-          </p>
+          <nav
+            aria-label="Breadcrumb"
+            style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem", flexWrap: "nowrap", whiteSpace: "nowrap", fontSize: "12px", marginBottom: "2rem" }}
+          >
+            <a href="/" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", flexShrink: 0, display: "inline" }}>
+              Home
+            </a>
+            <ChevronRight size={12} style={{ flexShrink: 0, color: "rgba(255,255,255,0.2)" }} />
+            <a
+              href={`/?segment=${service.segment}#programs`}
+              style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", flexShrink: 0, display: "inline" }}
+            >
+              Programs
+            </a>
+            <ChevronRight size={12} style={{ flexShrink: 0, color: "rgba(255,255,255,0.2)" }} />
+            <span style={{ color: "rgba(255,255,255,0.6)", flexShrink: 0 }}>{service.title}</span>
+          </nav>
 
           <div className="max-w-3xl">
             {/* Icon badge */}
@@ -154,23 +182,34 @@ export function ServicePage({ service }: ServicePageProps) {
               >
                 Program Highlights
               </p>
-              <div className="space-y-4">
-                {[
-                  { label: "Duration", value: service.slug === "business-growth-strategy" ? "6–9 Months" : "3–6 Months" },
-                  { label: "Format", value: "1-on-1 & Group" },
-                  { label: "Sessions", value: "Weekly Check-ins" },
-                  { label: "Support", value: "24/7 Access" },
-                ].map(({ label, value }) => (
-                  <div
-                    key={label}
-                    className="flex justify-between items-center py-2 border-b border-white/5 last:border-0"
-                  >
-                    <span className="text-white/40 text-sm font-heading">
+              <div className="divide-y divide-white/5">
+                {(service.segment === "corporate"
+                  ? [
+                      { label: "Duration", value: "1–2 Days" },
+                      { label: "Content", value: "Professionally Designed Slides" },
+                      { label: "Delivery", value: "Classroom · Virtual · Hybrid" },
+                      { label: "Methodology", value: "Interactive, Practical & Business-Focused" },
+                    ]
+                  : service.segment === "university"
+                  ? [
+                      { label: "Content", value: "Professionally Designed Slides" },
+                      { label: "Delivery", value: "Offline & Online" },
+                      { label: "Methodology", value: "Interactive, Practical & Business-Focused" },
+                    ]
+                  : [
+                      { label: "Duration", value: service.slug === "business-growth-strategy" ? "6–9 Months" : "3–6 Months" },
+                      { label: "Format", value: "1-on-1 & Group" },
+                      { label: "Sessions", value: "Weekly Check-ins" },
+                      { label: "Support", value: "24/7 Access" },
+                    ]
+                ).map(({ label, value }) => (
+                  <div key={label} className="py-4 first:pt-0 last:pb-0">
+                    <div className="text-white/50 text-xs font-heading uppercase tracking-wide mb-1.5">
                       {label}
-                    </span>
-                    <span className="text-white text-sm font-heading font-semibold">
+                    </div>
+                    <div className="text-white text-sm font-heading font-semibold leading-snug">
                       {value}
-                    </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -220,9 +259,7 @@ export function ServicePage({ service }: ServicePageProps) {
               <h2 className="heading-display text-3xl md:text-4xl text-white mb-8">
                 What We Work Together
               </h2>
-              <div
-                className={`grid gap-4 ${service.problemsSolved.length > 5 ? "grid-cols-1" : "grid-cols-1"}`}
-              >
+              <div className="grid gap-4 grid-cols-1">
                 {service.problemsSolved.map((item) => (
                   <div
                     key={item.heading}
@@ -362,6 +399,40 @@ export function ServicePage({ service }: ServicePageProps) {
         </div>
       </RevealSection>
 
+      {/* Master Program upsell -- all SME/family-business programs roll up into it */}
+      {service.segment === "sme" && (
+        <RevealSection className="py-16 bg-surface-1">
+          <div className="container max-w-5xl mx-auto px-6">
+            <div
+              className="rounded-2xl p-10 md:p-12 text-center border"
+              style={{
+                background: "linear-gradient(135deg, rgba(198,167,94,0.08) 0%, rgba(13,13,13,0.4) 100%)",
+                borderColor: "rgba(198,167,94,0.25)",
+              }}
+            >
+              <p className="text-gold text-xs font-heading font-bold tracking-widest uppercase mb-3">
+                Ready to Go Further?
+              </p>
+              <h2 className="heading-display text-3xl md:text-4xl text-white mb-4">
+                Explore the Master Program
+              </h2>
+              <p className="text-white/60 text-base font-body leading-relaxed max-w-xl mx-auto mb-8">
+                For leaders who want to go beyond this program -- the Elite
+                Growth System is our complete 6-12 month business and
+                leadership transformation engagement, by application only.
+              </p>
+              <Link
+                to="/elite-growth-system"
+                className="btn-gold-gradient inline-flex items-center gap-2 px-8 py-4 rounded-md font-heading font-bold tracking-wide uppercase"
+              >
+                View Master Program
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </RevealSection>
+      )}
+
       {/* Final CTA */}
       <RevealSection className="py-24 relative overflow-hidden">
         <div
@@ -398,7 +469,7 @@ export function ServicePage({ service }: ServicePageProps) {
             Apply Now
             <ArrowRight size={18} />
           </a>
-          <p className="text-white/25 text-sm font-body mt-6">
+          <p className="text-white/50 text-sm font-body mt-6">
             Application takes 5 minutes. No commitment required.
           </p>
         </div>

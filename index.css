@@ -922,6 +922,22 @@ section {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
 }
+
+/* ── REDUCED MOTION ─────────────────────────────────────────────────
+   Respect the OS-level "reduce motion" preference: collapse every
+   animation/transition to near-instant while keeping each element's
+   final (post-animation) state, so content still appears correctly. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+}
 /* Override for hero which is above fold */
 #hero {
   content-visibility: visible;

@@ -85,6 +85,8 @@ export function QualifyPage() {
     try {
       await mutateAsync({
         fullName,
+        email,
+        phone,
         age,
         profession,
         companyName,
@@ -284,7 +286,7 @@ export function QualifyPage() {
                   border: "1px solid oklch(0.96 0 0 / 8%)",
                 }}
               >
-                <p className="text-white/40 text-xs font-heading tracking-widest uppercase mb-3 font-semibold">
+                <p className="text-white/50 text-xs font-heading tracking-widest uppercase mb-3 font-semibold">
                   Next Step
                 </p>
                 <p className="text-white/60 text-sm font-body leading-relaxed">
@@ -305,7 +307,7 @@ export function QualifyPage() {
                 <ArrowRight size={16} />
               </a>
 
-              <p className="text-white/25 text-sm font-body mt-6">
+              <p className="text-white/50 text-sm font-body mt-6">
                 We respond within 24 hours on business days.
               </p>
             </div>
@@ -331,7 +333,7 @@ export function QualifyPage() {
                     Qualification Application
                   </h2>
                 </div>
-                <p className="text-white/40 text-sm font-body">
+                <p className="text-white/50 text-sm font-body">
                   All information is strictly confidential and protected under
                   NDA.
                 </p>
@@ -678,7 +680,7 @@ export function QualifyPage() {
                       </>
                     )}
                   </Button>
-                  <p className="text-white/25 text-xs font-body text-center mt-4">
+                  <p className="text-white/50 text-xs font-body text-center mt-4">
                     By submitting, you agree that Alpha Radar may contact you
                     about your application. All information is kept strictly
                     confidential.
@@ -705,7 +707,7 @@ export function QualifyPage() {
                   }}
                 >
                   <Icon size={14} className="text-gold/60" />
-                  <span className="text-white/30 text-xs font-heading">
+                  <span className="text-white/50 text-xs font-heading">
                     {label}
                   </span>
                 </div>

@@ -9,23 +9,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import {
   ArrowRight,
   Briefcase,
-  Building2,
   CheckCircle,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Factory,
-  Lightbulb,
+  GraduationCap,
   Loader2,
   Mail,
   MessageCircle,
   Phone,
   Rocket,
   Shield,
+  TrendingUp,
   X,
   Zap,
 } from "lucide-react";
@@ -37,6 +36,9 @@ import {
   useSubmitContactForm,
   useSubmitQualificationForm,
 } from "../hooks/useQueries";
+
+// --- Segment type shared between WhoWeHelp and Programs sections -------------
+type Segment = "corporate" | "sme" | "university";
 
 // --- Radar pulse animation component ----------------------------------------
 function RadarPulse() {
@@ -214,7 +216,7 @@ function RadarDisplay({ size = 320 }: { size?: number }) {
 function RadarSection() {
   return (
     <RevealSection
-      className="py-24 relative overflow-hidden"
+      className="py-28 relative overflow-hidden"
       style={
         {
           background: "linear-gradient(180deg, #0D0D0D 0%, #0D0D0D 100%)",
@@ -244,8 +246,23 @@ function RadarSection() {
           {/* Radar display -- centered, large */}
           <div className="flex justify-center lg:justify-start shrink-0 w-full lg:w-auto">
             <div className="relative">
+              {/* Outer glow ring -- Gold */}
+              <div
+                className="absolute -inset-4 rounded-full pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(198,167,94,0.18), transparent 70%)",
+                  filter: "blur(20px)",
+                }}
+              />
+              {/* Border ring -- Gold */}
               <div
                 className="rounded-full p-1"
+                style={{
+                  border: "1.5px solid rgba(198,167,94,0.40)",
+                  boxShadow:
+                    "0 0 48px rgba(198,167,94,0.18), inset 0 0 24px rgba(0,0,0,0.7)",
+                }}
               >
                 <div className="w-full flex justify-center overflow-hidden">
                 <div className="w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] lg:w-[460px] lg:h-[460px] shrink-0">
@@ -535,7 +552,7 @@ function HeroSection() {
             textRendering: "optimizeLegibility",
           }}
         >
-          Sharper Vision. Stronger Execution.
+          Sharper Vision. Superior Returns.
         </p>
 
         {/* CTAs */}
@@ -562,12 +579,12 @@ function HeroSection() {
 // --- About section -- Owner Bio ------------------------------------------------
 function AboutSection() {
   const expertiseTags = [
-    "Business Strategy",
-    "Revenue Optimization",
-    "Leadership Coaching",
-    "Systems Design",
-    "Execution Advisory",
-    "Startup Scaling",
+    "Business Strategy & Growth",
+    "Leadership Development",
+    "Sales Excellence",
+    "Process Excellence",
+    "Customer Experience",
+    "Family Business & Succession",
   ];
 
   return (
@@ -673,7 +690,10 @@ function AboutSection() {
                 Sushil Bohra
               </div>
               <div className="text-white/50 text-sm font-body">
-                Founder, Alpha Radar
+                Founder & Principal Consultant, Alpha Radar
+              </div>
+              <div className="text-white/50 text-xs font-body italic mt-1">
+                Business Coach · Business Strategist · Leadership Mentor
               </div>
             </div>
 
@@ -725,31 +745,37 @@ function AboutSection() {
 }
 
 // --- Who We Help section ------------------------------------------------------
-function WhoWeHelpSection() {
-  const segments = [
+function WhoWeHelpSection({
+  onExplore,
+}: {
+  onExplore: (segment: Segment) => void;
+}) {
+  const segments: Array<{
+    icon: typeof Briefcase;
+    title: string;
+    description: string;
+    segment: Segment;
+  }> = [
     {
       icon: Briefcase,
-      title: "Business Owners",
+      title: "Corporates",
       description:
-        "Scale your operations, increase profitability and build systems that run without your presence. Break through revenue plateaus and create lasting enterprise value.",
+        "Corporate learning and leadership development -- practical programmes across Leadership, Customer, Behavioural and Communication Excellence for CXOs to team leaders.",
+      segment: "corporate",
     },
     {
-      icon: Building2,
-      title: "Corporate Professionals",
+      icon: TrendingUp,
+      title: "SMEs & Family Business",
       description:
-        "Accelerate your career trajectory, develop executive presence and build the leadership skills needed to rise to C-suite and beyond.",
+        "Consulting engagements that build profitable, process-driven, future-ready enterprises -- and prepare next-generation successors to lead with confidence.",
+      segment: "sme",
     },
     {
-      icon: Factory,
-      title: "Industrial Leaders",
+      icon: GraduationCap,
+      title: "Universities & Institutions",
       description:
-        "Modernize operations, drive efficiency and lead transformational change in traditional industries. Future-proof your organization.",
-    },
-    {
-      icon: Lightbulb,
-      title: "Startup Founders",
-      description:
-        "Validate your model, achieve product-market fit and build investor-ready businesses. Navigate the startup journey with a proven strategist.",
+        "Industry-led masterclasses, bootcamps and guest lectures that bridge academic learning with industry-ready, employable skills for MBA, BBA and Engineering students.",
+      segment: "university",
     },
   ];
 
@@ -776,16 +802,17 @@ function WhoWeHelpSection() {
           <div className="section-divider" />
           <p className="eyebrow mb-4">Whom We Serve</p>
           <h2 className="heading-display text-5xl md:text-6xl lg:text-7xl text-white mb-5">
-            Built for Driven Leaders
+            Three Ways We Partner
           </h2>
           <p className="text-white/60 max-w-xl mx-auto font-body text-base">
-            Alpha Radar works exclusively with ambitious individuals committed
-            to achieving extraordinary results.
+            Whether your objective is corporate leadership development, SME
+            business growth, or industry-academia partnership -- Alpha Radar
+            partners with you to transform ambition into sustainable success.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {segments.map(({ icon: Icon, title, description }) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {segments.map(({ icon: Icon, title, description, segment }) => (
             <div
               key={title}
               className="card-premium rounded-xl p-7 group flex flex-col"
@@ -807,6 +834,7 @@ function WhoWeHelpSection() {
               </p>
               <a
                 href="#programs"
+                onClick={() => onExplore(segment)}
                 className="mt-4 inline-flex items-center gap-1 text-xs font-heading font-semibold tracking-wide transition-colors hover:opacity-80"
                 style={{ color: "#C6A75E" }}
               >
@@ -839,9 +867,47 @@ const serviceImages: Record<string, string> = {
   "performance-coaching":      "/assets/generated/svc-card-performance-coaching.jpg",
   "systems-scaling":           "/assets/generated/svc-card-systems-scaling.jpg",
   "execution-accountability":  "/assets/generated/svc-card-execution-accountability.jpg",
+  "family-business":           "/assets/generated/svc-card-family-business.webp",
+  "leading-in-a-vuca-bani-world":                             "/assets/generated/svc-card-leading-in-a-vuca-bani-world.webp",
+  "perform-or-perish-high-performance-team-leaders":          "/assets/generated/svc-card-perform-or-perish-high-performance-team-leaders.webp",
+  "breaking-organizational-complacency":                      "/assets/generated/svc-card-breaking-organizational-complacency.webp",
+  "customer-centricity-to-customer-intelligence":              "/assets/generated/svc-card-customer-centricity-to-customer-intelligence.webp",
+  "complaint-intelligence-framework":                          "/assets/generated/svc-card-complaint-intelligence-framework.webp",
+  "reading-minds-and-leading-people":                          "/assets/generated/svc-card-reading-minds-and-leading-people.webp",
+  "the-art-of-verbal-communication":                           "/assets/generated/svc-card-the-art-of-verbal-communication.webp",
+  "turning-crisis-into-competitive-advantage":                 "/assets/generated/svc-card-turning-crisis-into-competitive-advantage.webp",
+  "insight-to-impact-frontline-intelligence":                  "/assets/generated/svc-card-insight-to-impact-frontline-intelligence.webp",
+  "corporate-ready-classroom-to-corporate":                    "/assets/generated/svc-card-corporate-ready-classroom-to-corporate.webp",
+  "business-conversations-executive-communication-mastery":    "/assets/generated/svc-card-business-conversations-executive-communication-mastery.webp",
+  "from-mba-to-executive-leader":                              "/assets/generated/svc-card-from-mba-to-executive-leader.webp",
+  "win-every-customer-every-time":                             "/assets/generated/svc-card-win-every-customer-every-time.webp",
+  "from-insight-to-impact-relationship-management":            "/assets/generated/svc-card-from-insight-to-impact-relationship-management.webp",
+  "sales-mastery-science-and-art":                             "/assets/generated/svc-card-sales-mastery-science-and-art.webp",
+  "5s-sales-excellence":                                       "/assets/generated/svc-card-5s-sales-excellence.webp",
+  "heir-to-leader-next-generation-business-leaders":           "/assets/generated/svc-card-heir-to-leader-next-generation-business-leaders.webp",
 };
 
-function ProgramsSection() {
+const segmentTabs: Array<{
+  key: Segment;
+  label: string;
+  icon: typeof Briefcase;
+}> = [
+  { key: "corporate", label: "Corporates", icon: Briefcase },
+  { key: "sme", label: "SMEs & Family Business", icon: TrendingUp },
+  { key: "university", label: "Universities & Institutions", icon: GraduationCap },
+];
+
+function ProgramsSection({
+  activeSegment,
+  setActiveSegment,
+}: {
+  activeSegment: Segment;
+  setActiveSegment: (segment: Segment) => void;
+}) {
+  const filteredServices = servicesData.filter(
+    (service) => service.segment === activeSegment,
+  );
+
   return (
     <RevealSection
       id="programs"
@@ -862,7 +928,7 @@ function ProgramsSection() {
       />
 
       <div className="container max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <div className="section-divider" />
           <p
             className="font-heading text-[10.5px] font-bold tracking-[0.26em] uppercase mb-4 flex items-center justify-center gap-2"
@@ -884,8 +950,41 @@ function ProgramsSection() {
           </p>
         </div>
 
+        {/* Segment tab bar */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-14">
+          {segmentTabs.map(({ key, label, icon: Icon }) => {
+            const isActive = activeSegment === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setActiveSegment(key)}
+                aria-pressed={isActive}
+                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-heading font-semibold tracking-wide transition-all duration-300"
+                style={
+                  isActive
+                    ? {
+                        background:
+                          "linear-gradient(135deg, #D4AF37, #C6A75E)",
+                        color: "#0D0D0D",
+                        border: "1px solid transparent",
+                      }
+                    : {
+                        background: "rgba(255,255,255,0.03)",
+                        color: "rgba(255,255,255,0.65)",
+                        border: "1px solid rgba(198,167,94,0.25)",
+                      }
+                }
+              >
+                <Icon size={16} />
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {servicesData.map((service) => {
+          {filteredServices.map((service) => {
             const Icon = service.icon;
             return (
               <Link
@@ -894,12 +993,19 @@ function ProgramsSection() {
                 className="relative rounded-xl overflow-hidden block group"
                 style={{ minHeight: "280px" }}
               >
-                {/* Background image layer */}
+                {/* Background layer -- photo where available, gradient fallback otherwise */}
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${serviceImages[service.slug] ?? ""})`,
-                  }}
+                  style={
+                    serviceImages[service.slug]
+                      ? { backgroundImage: `url(${serviceImages[service.slug]})` }
+                      : {
+                          background:
+                            service.accent === "gold"
+                              ? "linear-gradient(135deg, #1a1508 0%, #0D0D0D 70%)"
+                              : "linear-gradient(135deg, #0a1420 0%, #0D0D0D 70%)",
+                        }
+                  }
                 />
                 {/* Dark overlay -- heavy black + gold tint for black/gold theme */}
                 <div
@@ -1378,7 +1484,7 @@ function FAQSection() {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-white/30 text-sm font-body mb-4">
+          <p className="text-white/50 text-sm font-body mb-4">
             Have more questions?
           </p>
           <a
@@ -1454,7 +1560,7 @@ function FinalCTASection() {
           </a>
         </div>
 
-        <p className="text-white/25 text-xs font-body mt-4">
+        <p className="text-white/50 text-xs font-body mt-4">
           Limited spots available each month. First session is complimentary.
         </p>
       </div>
@@ -1586,7 +1692,7 @@ function ContactSection() {
                         }}
                         placeholder="98765 43210" maxLength={10} pattern="[0-9]{10}"
                         autoComplete="tel"
-                        className="bg-surface-3 border-white/10 text-white placeholder:text-white/20 focus:border-gold/50 focus:ring-gold/20 font-body"
+                        className="bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body"
                         style={{ paddingLeft: "3.4rem" }}
                       />
                       <div
@@ -1702,7 +1808,7 @@ function ContactSection() {
 
             {/* Why Alpha Radar */}
             <div className="bg-surface-3 rounded-xl p-6 border border-white/5">
-              <p className="text-white/40 text-xs font-heading tracking-wider uppercase mb-4">Why Alpha Radar?</p>
+              <p className="text-white/50 text-xs font-heading tracking-wider uppercase mb-4">Why Alpha Radar?</p>
               <div className="space-y-3">
                 {[
                   "Result-Oriented Strategy -- Tailored to Your Business",
@@ -1728,13 +1834,19 @@ function ContactSection() {
 
 // --- Homepage root -------------------------------------------------------------
 export function HomePage() {
+  const { segment: segmentParam } = useSearch({ from: "/" });
+  const [activeSegment, setActiveSegment] = useState<Segment>(segmentParam ?? "sme");
+
   return (
     <main>
       <HeroSection />
       <RadarSection />
       <AboutSection />
-      <WhoWeHelpSection />
-      <ProgramsSection />
+      <WhoWeHelpSection onExplore={setActiveSegment} />
+      <ProgramsSection
+        activeSegment={activeSegment}
+        setActiveSegment={setActiveSegment}
+      />
       <WhyThisIsImportantSection />
       <FAQSection />
       <FinalCTASection />

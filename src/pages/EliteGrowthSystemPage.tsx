@@ -164,7 +164,7 @@ export function EliteGrowthSystemPage() {
               >
                 <Crown size={13} className="text-gold" />
                 <span className="text-gold text-xs font-heading font-bold tracking-[0.2em] uppercase">
-                  Elite Transformation Program
+                  Master Program
                 </span>
               </div>
               <div
@@ -397,7 +397,7 @@ export function EliteGrowthSystemPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-white/25 shrink-0 mt-2" />
-                      <span className="text-white/40 text-sm font-body leading-relaxed">
+                      <span className="text-white/50 text-sm font-body leading-relaxed">
                         {item}
                       </span>
                     </li>
@@ -488,7 +488,7 @@ export function EliteGrowthSystemPage() {
             <p className="text-gold font-heading text-sm tracking-widest uppercase mb-3 font-semibold">
               Investment
             </p>
-            <h2 className="heading-display text-4xl md:text-5xl text-white mb-6">
+            <h2 className="heading-display text-4xl md:text-5xl text-white mb-4">
               By Application Only
             </h2>
             <p className="text-white/55 text-lg font-body leading-relaxed mb-8">
@@ -529,14 +529,14 @@ export function EliteGrowthSystemPage() {
                   <h4 className="font-heading font-bold text-white text-sm mb-1">
                     {title}
                   </h4>
-                  <p className="text-white/40 text-xs font-body leading-relaxed">
+                  <p className="text-white/50 text-xs font-body leading-relaxed">
                     {desc}
                   </p>
                 </div>
               ))}
             </div>
 
-            <p className="text-white/30 text-sm font-body italic mb-8">
+            <p className="text-white/50 text-sm font-body italic mb-8">
               "This isn't an expense. It's the highest-leverage investment
               you'll make in your business this year."
             </p>
@@ -575,7 +575,7 @@ export function EliteGrowthSystemPage() {
             </blockquote>
             <div>
               <p className="font-heading font-bold text-white">Rajiv Mehta</p>
-              <p className="text-white/40 text-sm font-body">
+              <p className="text-white/50 text-sm font-body">
                 Managing Director, Apex Industrial Solutions
               </p>
             </div>
@@ -612,12 +612,12 @@ export function EliteGrowthSystemPage() {
           </p>
           <a
             href="/#contact"
-            className="btn-blue-cta inline-flex items-center gap-2 px-12 py-5 rounded-md text-base font-heading font-bold tracking-wide uppercase glow-blue"
+            className="btn-blue-cta inline-flex items-center gap-2 px-10 py-5 rounded-md text-base font-heading font-bold tracking-wide uppercase glow-blue"
           >
             Apply Now
             <ArrowRight size={18} />
           </a>
-          <p className="text-white/25 text-sm font-body mt-6">
+          <p className="text-white/50 text-sm font-body mt-6">
             Limited to 8 clients per quarter. Applications close when capacity
             is full.
           </p>

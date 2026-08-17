@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { Layout } from "./components/Layout";
 import { getServiceBySlug, servicesData } from "./data/services";
+import { EliteGrowthSystemPage } from "./pages/EliteGrowthSystemPage";
 import { HomePage } from "./pages/HomePage";
 import { QualifyPage } from "./pages/QualifyPage";
 import { ServicePage } from "./pages/ServicePage";
@@ -28,12 +29,41 @@ const rootRoute = createRootRoute({
       <Layout />
     </>
   ),
+  notFoundComponent: () => (
+    <div className="min-h-screen bg-surface-1 flex items-center justify-center pt-24">
+      <div className="text-center">
+        <h1 className="heading-display text-4xl text-white mb-4">
+          Page Not Found
+        </h1>
+        <p className="text-white/50 font-body mb-8">
+          The page you're looking for doesn't exist.
+        </p>
+        <a
+          href="/"
+          className="btn-gold-gradient inline-flex items-center gap-2 px-6 py-3 rounded-md font-heading font-bold tracking-wide uppercase"
+        >
+          Back to Home
+        </a>
+      </div>
+    </div>
+  ),
 });
 
 // --- Homepage route ------------------------------------------------------------
+type IndexSearch = { segment?: "corporate" | "sme" | "university" };
+
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
+  validateSearch: (search: Record<string, unknown>): IndexSearch => {
+    const segment =
+      search.segment === "corporate" ||
+      search.segment === "sme" ||
+      search.segment === "university"
+        ? search.segment
+        : undefined;
+    return segment ? { segment } : {};
+  },
   component: HomePage,
 });
 
@@ -79,6 +109,13 @@ const serviceRoutes = servicesData.map((service) =>
   }),
 );
 
+// --- Elite Growth System (Master Program) route ---------------------------------
+const eliteGrowthSystemRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/elite-growth-system",
+  component: EliteGrowthSystemPage,
+});
+
 // --- Qualify route -------------------------------------------------------------
 export const qualifyRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -94,6 +131,7 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   serviceRoute,
   ...serviceRoutes,
+  eliteGrowthSystemRoute,
   qualifyRoute,
 ]);
 

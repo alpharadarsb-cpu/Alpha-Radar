@@ -19,29 +19,11 @@ export function Navbar() {
     setMenuOpen(false);
   }, [router.state.location.pathname]);
 
-  const [activeHash, setActiveHash] = useState(
-    typeof window !== "undefined" ? window.location.hash : ""
-  );
-
   const pathname = router.state.location.pathname;
-  const isHome = pathname === "/";
-
-  useEffect(() => {
-    const onHashChange = () => setActiveHash(window.location.hash);
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
-
-  // Reset hash when navigating to a non-home page
-  // biome-ignore lint/correctness/useExhaustiveDependencies: track pathname
-  useEffect(() => {
-    if (pathname !== "/") setActiveHash("");
-  }, [pathname]);
-
-  const navItemClass = (hash?: string) => {
-    const isActive = hash
-      ? isHome && activeHash === hash
-      : isHome && !activeHash;
+  const navLinkClass =
+    "font-heading text-base font-semibold text-white/70 hover:text-white transition-colors duration-200 tracking-wider [&.active]:text-gold relative group";
+  const hashLinkClass = (hash: string) => {
+    const isActive = typeof window !== "undefined" && window.location.hash === hash;
     return `font-heading text-base font-semibold transition-colors duration-200 tracking-wider relative group ${isActive ? "text-gold" : "text-white/70 hover:text-white"}`;
   };
 
@@ -56,13 +38,13 @@ export function Navbar() {
         background: scrolled ? "rgba(0,0,0,0.88)" : "rgba(0,0,0,0.25)",
       }}
     >
-      <div className="container max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
+      <div className="container max-w-7xl mx-auto px-6 h-16" style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center" }}>
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group transition-opacity duration-200 hover:opacity-85">
-          {/* Symbol PNG — high-res 1235x900, crisp at any display size */}
+        <Link to="/" className="flex items-center gap-2 group transition-opacity duration-200 hover:opacity-85 justify-self-start">
+          {/* Logo mark — 256px source, crisp on retina at 40px display height */}
           <img
-            src="/assets/generated/alpha-radar-logo.png"
-            alt="Alpha Radar"
+            src="/assets/generated/alpha-radar-logo-mark.png"
+            alt="Alpha Radar — Business Coaching, Consulting & Corporate Learning"
             fetchPriority="high"
             className="block shrink-0"
             style={{
@@ -103,30 +85,30 @@ export function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop Nav — centered on page */}
-        <nav className="hidden md:flex items-center gap-7" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}>
-          <Link to="/" className={navItemClass()} onClick={() => setActiveHash("")}>
+        {/* Desktop Nav — absolutely centered in the header */}
+        <nav className="hidden md:flex items-center gap-7 justify-self-center">
+          <Link to="/" className={navLinkClass}>
             <span className="relative">
               Overview
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
             </span>
           </Link>
 
-          <a href="/#about" className={navItemClass("#about")} onClick={() => setActiveHash("#about")}>
+          <a href="/#about" className={navLinkClass}>
             <span className="relative">
               Our Story
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
             </span>
           </a>
 
-          <a href="/#programs" className={navItemClass("#programs")} onClick={() => setActiveHash("#programs")}>
+          <a href="/#programs" className={navLinkClass}>
             <span className="relative">
               Programs
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
             </span>
           </a>
 
-          <a href="/#contact" className={navItemClass("#contact")} onClick={() => setActiveHash("#contact")}>
+          <a href="/#contact" className={navLinkClass}>
             <span className="relative">
               Connect With Us
               <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-gold transition-all duration-300 group-hover:w-full rounded-full" />
@@ -137,7 +119,7 @@ export function Navbar() {
         </nav>
 
         {/* CTA */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4 justify-self-end">
           <div className="relative">
             <a
               href="/#contact"
@@ -159,7 +141,8 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden text-white/80 hover:text-gold transition-colors"
+          className="md:hidden text-white/80 hover:text-gold transition-colors justify-self-end p-2.5 -m-2.5"
+          style={{ gridColumn: "3" }}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
@@ -205,7 +188,7 @@ export function Navbar() {
 
 
           <div className="pt-5">
-            <p className="text-white/30 text-xs font-heading tracking-widest uppercase pb-3">
+            <p className="text-white/50 text-xs font-heading tracking-widest uppercase pb-3">
               Ready to start?
             </p>
             <a
