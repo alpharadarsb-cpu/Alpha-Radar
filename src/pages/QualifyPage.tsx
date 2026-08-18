@@ -186,7 +186,7 @@ export function QualifyPage() {
             </span>
           </div>
 
-          <h1 className="heading-display text-[clamp(1.4rem,7vw,3.75rem)] text-white mb-4">
+          <h1 className="heading-display text-4xl md:text-5xl lg:text-6xl text-white mb-4">
             Client Qualification{" "}
             <span className="text-gradient-gold">Form</span>
           </h1>

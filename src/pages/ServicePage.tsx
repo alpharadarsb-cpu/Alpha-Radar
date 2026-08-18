@@ -130,7 +130,7 @@ export function ServicePage({ service }: ServicePageProps) {
               </span>
             </div>
 
-            <h1 className="heading-display text-[clamp(1.7rem,7vw,4.8rem)] text-white mb-6">
+            <h1 className="heading-display text-5xl md:text-6xl lg:text-7xl text-white mb-6">
               {service.title}
             </h1>
             <p

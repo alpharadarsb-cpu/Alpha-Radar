@@ -6,28 +6,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Font faces (self-hosted) ─────────────────────────────────── */
-@font-face {
-  font-family: "Mona Sans";
-  src: url("/assets/fonts/Mona-Sans.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Cabinet Grotesk";
-  src: url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
-  font-weight: 200 800;
-  font-style: normal;
+/* ─── Font faces ─────────────────────────────────────────────────
+   Mona Sans / Cabinet Grotesk / Bricolage Grotesque were never
+   actually bundled with this project (no source files exist), so
+   these @font-face rules always 404'd and never rendered anything.
+   Removed -- every font-family chain below already falls through to
+   Inter/Syne (real, loaded via the Google Fonts import above) or a
+   generic sans-serif, so nothing changes visually, this just removes
+   the dead declarations and the build-time "didn't resolve" warnings.
   font-display: swap;
 }
 
@@ -888,6 +874,9 @@ html {
   .container {
     padding-left: 16px;
     padding-right: 16px;
+  }
+  .heading-display {
+    font-size: clamp(2.4rem, 11vw, 4rem) !important;
   }
 }
 
