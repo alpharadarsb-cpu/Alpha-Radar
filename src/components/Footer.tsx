@@ -18,6 +18,8 @@ export function Footer() {
               <img
                 src="/assets/generated/alpha-radar-logo-mark.svg"
                 alt="Alpha Radar — Business Coaching, Consulting & Corporate Learning"
+                width={38}
+                height={38}
                 style={{ height: "38px", width: "auto", filter: "drop-shadow(0 0 5px rgba(212,175,55,0.22))" }}
               />
               <div style={{ width: "1px", height: "26px", background: "rgba(198,167,94,0.18)", flexShrink: 0 }} />
@@ -57,9 +59,9 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="font-heading font-bold text-white text-sm tracking-wider uppercase mb-5">
+            <h3 className="font-heading font-bold text-white text-sm tracking-wider uppercase mb-5">
               Navigation
-            </h4>
+            </h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -90,9 +92,9 @@ export function Footer() {
 
           {/* Programs -- grouped by segment, curated, with a link to the full filtered list */}
           <div>
-            <h4 className="font-heading font-bold text-white text-sm tracking-wider uppercase mb-5">
+            <h3 className="font-heading font-bold text-white text-sm tracking-wider uppercase mb-5">
               Programs
-            </h4>
+            </h3>
             {(
               [
                 { key: "corporate", label: "Corporate" },
@@ -138,9 +140,9 @@ export function Footer() {
 
           {/* Contact quick links */}
           <div>
-            <h4 className="font-heading font-bold text-white text-sm tracking-wider uppercase mb-5">
+            <h3 className="font-heading font-bold text-white text-sm tracking-wider uppercase mb-5">
               Connect With Us
-            </h4>
+            </h3>
             <div className="space-y-4">
               <a
                 href="https://wa.me/919377676979"

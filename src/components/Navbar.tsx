@@ -59,6 +59,8 @@ export function Navbar() {
             src="/assets/generated/alpha-radar-logo-mark.svg"
             alt="Alpha Radar — Business Coaching, Consulting & Corporate Learning"
             fetchPriority="high"
+            width={40}
+            height={40}
             className="block shrink-0"
             style={{
               height: "40px",

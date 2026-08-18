@@ -14,6 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import { RevealSection } from "../components/RevealSection";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const WHATS_INCLUDED = [
   {
@@ -104,6 +105,7 @@ const MILESTONES = [
 ];
 
 export function EliteGrowthSystemPage() {
+  useDocumentTitle("Master Program — Elite Growth System");
   return (
     <div className="min-h-screen bg-surface-1">
       {/* Hero */}
@@ -224,7 +226,7 @@ export function EliteGrowthSystemPage() {
             >
               <a
                 href="/#contact"
-                className="btn-blue-cta inline-flex items-center gap-2 px-10 py-5 rounded-md font-heading font-bold tracking-wide uppercase glow-blue"
+                className="btn-gold-gradient glow-gold-gradient inline-flex items-center gap-2 px-10 py-5 rounded-md font-heading font-bold tracking-wide uppercase"
               >
                 Apply Now
                 <ArrowRight size={18} />
@@ -250,7 +252,7 @@ export function EliteGrowthSystemPage() {
                   <div className="text-gold font-display text-3xl md:text-4xl font-extrabold tracking-tight">
                     {value}
                   </div>
-                  <div className="text-white/35 text-xs font-heading tracking-[0.1em] uppercase mt-1">
+                  <div className="text-white/55 text-xs font-heading tracking-[0.1em] uppercase mt-1">
                     {label}
                   </div>
                 </div>
@@ -526,9 +528,9 @@ export function EliteGrowthSystemPage() {
                   }}
                 >
                   <Icon size={20} className="text-gold mb-3" />
-                  <h4 className="font-heading font-bold text-white text-sm mb-1">
+                  <h3 className="font-heading font-bold text-white text-sm mb-1">
                     {title}
-                  </h4>
+                  </h3>
                   <p className="text-white/50 text-xs font-body leading-relaxed">
                     {desc}
                   </p>
@@ -612,7 +614,7 @@ export function EliteGrowthSystemPage() {
           </p>
           <a
             href="/#contact"
-            className="btn-blue-cta inline-flex items-center gap-2 px-10 py-5 rounded-md text-base font-heading font-bold tracking-wide uppercase glow-blue"
+            className="btn-gold-gradient glow-gold-gradient inline-flex items-center gap-2 px-10 py-5 rounded-md text-base font-heading font-bold tracking-wide uppercase"
           >
             Apply Now
             <ArrowRight size={18} />

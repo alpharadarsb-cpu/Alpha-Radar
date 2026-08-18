@@ -2,14 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle, ChevronRight } from "lucide-react";
 import { RevealSection } from "../components/RevealSection";
 import type { ServiceData } from "../data/services";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const serviceHeroImages: Record<string, string> = {
-  "business-growth-strategy":  "/assets/generated/svc-hero-business-growth-strategy.jpg",
-  "revenue-optimization":      "/assets/generated/svc-hero-revenue-optimization.jpg",
-  "leadership-development":    "/assets/generated/svc-hero-leadership-development.jpg",
-  "performance-coaching":      "/assets/generated/svc-hero-performance-coaching.jpg",
-  "systems-scaling":           "/assets/generated/svc-hero-systems-scaling.jpg",
-  "execution-accountability":  "/assets/generated/svc-hero-execution-accountability.jpg",
+  "business-growth-strategy":  "/assets/generated/svc-hero-business-growth-strategy.webp",
+  "revenue-optimization":      "/assets/generated/svc-hero-revenue-optimization.webp",
+  "leadership-development":    "/assets/generated/svc-hero-leadership-development.webp",
+  "performance-coaching":      "/assets/generated/svc-hero-performance-coaching.webp",
+  "systems-scaling":           "/assets/generated/svc-hero-systems-scaling.webp",
+  "execution-accountability":  "/assets/generated/svc-hero-execution-accountability.webp",
   "family-business":           "/assets/generated/svc-hero-family-business.webp",
   "leading-in-a-vuca-bani-world":                             "/assets/generated/svc-hero-leading-in-a-vuca-bani-world.webp",
   "perform-or-perish-high-performance-team-leaders":          "/assets/generated/svc-hero-perform-or-perish-high-performance-team-leaders.webp",
@@ -35,6 +36,7 @@ interface ServicePageProps {
 }
 
 export function ServicePage({ service }: ServicePageProps) {
+  useDocumentTitle(service.title);
   const Icon = service.icon;
   const accentColor =
     service.accent === "gold" ? "text-gold" : "text-electric-blue";
@@ -103,17 +105,17 @@ export function ServicePage({ service }: ServicePageProps) {
             aria-label="Breadcrumb"
             style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem", flexWrap: "nowrap", whiteSpace: "nowrap", fontSize: "12px", marginBottom: "2rem" }}
           >
-            <a href="/" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", flexShrink: 0, display: "inline" }}>
+            <a href="/" style={{ color: "rgba(255,255,255,0.55)", textDecoration: "none", flexShrink: 0, display: "inline" }}>
               Home
             </a>
-            <ChevronRight size={12} style={{ flexShrink: 0, color: "rgba(255,255,255,0.2)" }} />
+            <ChevronRight size={12} aria-hidden="true" style={{ flexShrink: 0, color: "rgba(255,255,255,0.2)" }} />
             <a
               href={`/?segment=${service.segment}#programs`}
-              style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", flexShrink: 0, display: "inline" }}
+              style={{ color: "rgba(255,255,255,0.55)", textDecoration: "none", flexShrink: 0, display: "inline" }}
             >
               Programs
             </a>
-            <ChevronRight size={12} style={{ flexShrink: 0, color: "rgba(255,255,255,0.2)" }} />
+            <ChevronRight size={12} aria-hidden="true" style={{ flexShrink: 0, color: "rgba(255,255,255,0.2)" }} />
             <span style={{ color: "rgba(255,255,255,0.6)", flexShrink: 0 }}>{service.title}</span>
           </nav>
 

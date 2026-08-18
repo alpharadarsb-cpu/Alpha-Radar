@@ -21,9 +21,11 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { RevealSection } from "../components/RevealSection";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useSubmitQualificationForm } from "../hooks/useQueries";
 
 export function QualifyPage() {
+  useDocumentTitle("Qualification Application");
   // Read the selected program from the URL search params via TanStack Router
   const { program: selectedProgram } = useSearch({ from: "/qualify" });
 
@@ -40,10 +42,12 @@ export function QualifyPage() {
     primaryGoal: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
   const { mutateAsync, isPending } = useSubmitQualificationForm();
 
   const updateField = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => (prev[field] ? { ...prev, [field]: false } : prev));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,21 +65,27 @@ export function QualifyPage() {
       primaryGoal,
     } = form;
 
-    if (
-      !fullName ||
-      !email ||
-      !phone ||
-      !age ||
-      !profession ||
-      !companyName ||
-      !industry ||
-      !annualTurnover ||
-      !biggestChallenge ||
-      !primaryGoal
-    ) {
-      toast.error("Please complete all fields before submitting.");
+    const missing: Record<string, boolean> = {
+      fullName: !fullName,
+      email: !email,
+      phone: !phone,
+      age: !age,
+      profession: !profession,
+      companyName: !companyName,
+      industry: !industry,
+      annualTurnover: !annualTurnover,
+      biggestChallenge: !biggestChallenge,
+      primaryGoal: !primaryGoal,
+    };
+    const missingFields = Object.keys(missing).filter((key) => missing[key]);
+
+    if (missingFields.length > 0) {
+      setErrors(missing);
+      toast.error("Please complete the highlighted fields before submitting.");
+      document.getElementById(missingFields[0])?.focus();
       return;
     }
+    setErrors({});
 
     // Prepend program info to primaryGoal so the received email includes it
     const goalWithProgram = selectedProgram
@@ -143,8 +153,18 @@ export function QualifyPage() {
 
   const inputClass =
     "bg-surface-3 border-white/10 text-white placeholder:text-white/20 focus:border-gold/50 focus:ring-gold/20 font-body h-11 text-base";
+  const textareaClass =
+    "bg-surface-3 border-white/10 text-white placeholder:text-white/20 focus:border-gold/50 focus:ring-gold/20 font-body text-base resize-none";
   const labelClass =
     "text-white/50 text-xs font-heading tracking-wider uppercase mb-1.5 block font-semibold";
+  const errorBorder = (field: string) =>
+    errors[field] ? "border-red-500/70 focus:border-red-500" : "";
+  const FieldError = ({ field }: { field: string }) =>
+    errors[field] ? (
+      <p className="text-red-400 text-xs font-body mt-1.5" role="alert">
+        This field is required.
+      </p>
+    ) : null;
 
   return (
     <div className="min-h-screen bg-surface-1">
@@ -411,9 +431,11 @@ export function QualifyPage() {
                       onChange={(e) => updateField("fullName", e.target.value)}
                       placeholder="Your full name"
                       required
-                      className={inputClass}
+                      aria-invalid={errors.fullName || undefined}
+                      className={`${inputClass} ${errorBorder("fullName")}`}
                       autoComplete="name"
                     />
+                    <FieldError field="fullName" />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -428,9 +450,11 @@ export function QualifyPage() {
                         onChange={(e) => updateField("email", e.target.value)}
                         placeholder="your@email.com"
                         required
-                        className={inputClass}
+                        aria-invalid={errors.email || undefined}
+                        className={`${inputClass} ${errorBorder("email")}`}
                         autoComplete="email"
                       />
+                      <FieldError field="email" />
                     </div>
                     <div>
                       <Label htmlFor="phone" className={labelClass}>
@@ -450,7 +474,8 @@ export function QualifyPage() {
                           maxLength={10}
                           pattern="[0-9]{10}"
                           required
-                          className={inputClass}
+                          aria-invalid={errors.phone || undefined}
+                          className={`${inputClass} ${errorBorder("phone")}`}
                           style={{ paddingLeft: "3.4rem" }}
                           autoComplete="tel"
                         />
@@ -471,6 +496,7 @@ export function QualifyPage() {
                           </span>
                         )}
                       </div>
+                      <FieldError field="phone" />
                     </div>
                   </div>
 
@@ -484,7 +510,7 @@ export function QualifyPage() {
                         onValueChange={(v) => updateField("age", v)}
                         required
                       >
-                        <SelectTrigger id="age" className={inputClass}>
+                        <SelectTrigger id="age" className={`${inputClass} ${errorBorder("age")}`}>
                           <SelectValue placeholder="Select age range" />
                         </SelectTrigger>
                         <SelectContent className="bg-surface-3 border-white/10 text-white">
@@ -499,6 +525,7 @@ export function QualifyPage() {
                           ))}
                         </SelectContent>
                       </Select>
+                      <FieldError field="age" />
                     </div>
 
                     <div>
@@ -510,7 +537,7 @@ export function QualifyPage() {
                         onValueChange={(v) => updateField("profession", v)}
                         required
                       >
-                        <SelectTrigger id="profession" className={inputClass}>
+                        <SelectTrigger id="profession" className={`${inputClass} ${errorBorder("profession")}`}>
                           <SelectValue placeholder="Select your role" />
                         </SelectTrigger>
                         <SelectContent className="bg-surface-3 border-white/10 text-white">
@@ -532,6 +559,7 @@ export function QualifyPage() {
                           ))}
                         </SelectContent>
                       </Select>
+                      <FieldError field="profession" />
                     </div>
                   </div>
                 </fieldset>
@@ -560,9 +588,11 @@ export function QualifyPage() {
                         }
                         placeholder="Your company name"
                         required
-                        className={inputClass}
+                        aria-invalid={errors.companyName || undefined}
+                        className={`${inputClass} ${errorBorder("companyName")}`}
                         autoComplete="organization"
                       />
+                      <FieldError field="companyName" />
                     </div>
 
                     <div>
@@ -577,8 +607,10 @@ export function QualifyPage() {
                         }
                         placeholder="e.g. Manufacturing, SaaS"
                         required
-                        className={inputClass}
+                        aria-invalid={errors.industry || undefined}
+                        className={`${inputClass} ${errorBorder("industry")}`}
                       />
+                      <FieldError field="industry" />
                     </div>
                   </div>
 
@@ -591,7 +623,7 @@ export function QualifyPage() {
                       onValueChange={(v) => updateField("annualTurnover", v)}
                       required
                     >
-                      <SelectTrigger id="annualTurnover" className={inputClass}>
+                      <SelectTrigger id="annualTurnover" className={`${inputClass} ${errorBorder("annualTurnover")}`}>
                         <SelectValue placeholder="Select turnover range" />
                       </SelectTrigger>
                       <SelectContent className="bg-surface-3 border-white/10 text-white">
@@ -612,6 +644,7 @@ export function QualifyPage() {
                         ))}
                       </SelectContent>
                     </Select>
+                    <FieldError field="annualTurnover" />
                   </div>
                 </fieldset>
 
@@ -639,8 +672,10 @@ export function QualifyPage() {
                       placeholder="Describe the most significant challenge your business is facing right now..."
                       required
                       rows={4}
-                      className="bg-surface-3 border-white/10 text-white placeholder:text-white/20 focus:border-gold/50 focus:ring-gold/20 font-body text-base resize-none"
+                      aria-invalid={errors.biggestChallenge || undefined}
+                      className={`${textareaClass} ${errorBorder("biggestChallenge")}`}
                     />
+                    <FieldError field="biggestChallenge" />
                   </div>
 
                   <div>
@@ -656,8 +691,10 @@ export function QualifyPage() {
                       placeholder="What does success look like for you in the next 6-12 months? Be specific about targets and outcomes..."
                       required
                       rows={4}
-                      className="bg-surface-3 border-white/10 text-white placeholder:text-white/20 focus:border-gold/50 focus:ring-gold/20 font-body text-base resize-none"
+                      aria-invalid={errors.primaryGoal || undefined}
+                      className={`${textareaClass} ${errorBorder("primaryGoal")}`}
                     />
+                    <FieldError field="primaryGoal" />
                   </div>
                 </fieldset>
 

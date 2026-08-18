@@ -86,6 +86,7 @@ function RadarDisplay({ size = 320 }: { size?: number }) {
     const s = actualSize;
     let angle = 0;
     let animId: number;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Blips: random positions within the radar circle
     const blips = Array.from({ length: 8 }, () => ({
@@ -192,8 +193,10 @@ function RadarDisplay({ size = 320 }: { size?: number }) {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      angle += 0.02;
-      animId = requestAnimationFrame(draw);
+      if (!prefersReducedMotion) {
+        angle += 0.02;
+        animId = requestAnimationFrame(draw);
+      }
     }
 
     draw();
@@ -641,8 +644,10 @@ function AboutSection() {
                   }}
                 >
                   <img
-                    src="/assets/generated/owner-portrait.dim_600x700.jpg"
-                    loading="eager"
+                    src="/assets/generated/owner-portrait.dim_600x700.webp"
+                    loading="lazy"
+                    width={600}
+                    height={700}
                     alt="Sushil Bohra -- Founder, Alpha Radar"
                     className="w-full object-cover block mx-auto"
                     style={{ maxHeight: "520px", objectPosition: "center top" }}
@@ -861,12 +866,12 @@ function WhoWeHelpSection({
 
 // --- Services section -- dark navy with background-image cards ----------------
 const serviceImages: Record<string, string> = {
-  "business-growth-strategy":  "/assets/generated/svc-card-business-growth-strategy.jpg",
-  "revenue-optimization":      "/assets/generated/svc-card-revenue-optimization.jpg",
-  "leadership-development":    "/assets/generated/svc-card-leadership-development.jpg",
-  "performance-coaching":      "/assets/generated/svc-card-performance-coaching.jpg",
-  "systems-scaling":           "/assets/generated/svc-card-systems-scaling.jpg",
-  "execution-accountability":  "/assets/generated/svc-card-execution-accountability.jpg",
+  "business-growth-strategy":  "/assets/generated/svc-card-business-growth-strategy.webp",
+  "revenue-optimization":      "/assets/generated/svc-card-revenue-optimization.webp",
+  "leadership-development":    "/assets/generated/svc-card-leadership-development.webp",
+  "performance-coaching":      "/assets/generated/svc-card-performance-coaching.webp",
+  "systems-scaling":           "/assets/generated/svc-card-systems-scaling.webp",
+  "execution-accountability":  "/assets/generated/svc-card-execution-accountability.webp",
   "family-business":           "/assets/generated/svc-card-family-business.webp",
   "leading-in-a-vuca-bani-world":                             "/assets/generated/svc-card-leading-in-a-vuca-bani-world.webp",
   "perform-or-perish-high-performance-team-leaders":          "/assets/generated/svc-card-perform-or-perish-high-performance-team-leaders.webp",
@@ -1643,18 +1648,39 @@ function FinalCTASection() {
 function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
   const { mutateAsync, isPending } = useSubmitContactForm();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => (prev[name] ? { ...prev, [name]: false } : prev));
   };
+
+  const errorBorder = (field: string) =>
+    errors[field] ? "border-red-500/70 focus:border-red-500" : "";
+  const FieldError = ({ field }: { field: string }) =>
+    errors[field] ? (
+      <p className="text-red-400 text-xs font-body mt-1.5" role="alert">
+        This field is required.
+      </p>
+    ) : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) {
-      toast.error("Please fill in all required fields.");
+    const missing: Record<string, boolean> = {
+      name: !form.name,
+      email: !form.email,
+      message: !form.message,
+    };
+    const missingFields = Object.keys(missing).filter((key) => missing[key]);
+    if (missingFields.length > 0) {
+      setErrors(missing);
+      toast.error("Please complete the highlighted fields before submitting.");
+      document.getElementById(missingFields[0])?.focus();
       return;
     }
+    setErrors({});
     try {
       await mutateAsync(form);
       setSubmitted(true);
@@ -1733,8 +1759,10 @@ function ContactSection() {
                   <Input
                     id="name" name="name" value={form.name} onChange={handleChange}
                     placeholder="Your full name" required autoComplete="name"
-                    className="bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body"
+                    aria-invalid={errors.name || undefined}
+                    className={`bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body h-11 ${errorBorder("name")}`}
                   />
+                  <FieldError field="name" />
                 </div>
 
                 {/* Email + Phone */}
@@ -1746,8 +1774,10 @@ function ContactSection() {
                     <Input
                       id="email" name="email" type="email" value={form.email} onChange={handleChange}
                       placeholder="your@email.com" required autoComplete="email"
-                      className="bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body"
+                      aria-invalid={errors.email || undefined}
+                      className={`bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body h-11 ${errorBorder("email")}`}
                     />
+                    <FieldError field="email" />
                   </div>
                   <div>
                     <Label htmlFor="phone" className="text-white/60 text-xs font-heading tracking-wider uppercase mb-2 block">
@@ -1763,7 +1793,7 @@ function ContactSection() {
                         }}
                         placeholder="98765 43210" maxLength={10} pattern="[0-9]{10}"
                         autoComplete="tel"
-                        className="bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body"
+                        className="bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body h-11"
                         style={{ paddingLeft: "3.4rem" }}
                       />
                       <div
@@ -1793,8 +1823,10 @@ function ContactSection() {
                     id="message" name="message" value={form.message} onChange={handleChange}
                     placeholder="Tell us about your business and what you're looking to achieve..."
                     required rows={5}
-                    className="bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body resize-none"
+                    aria-invalid={errors.message || undefined}
+                    className={`bg-surface-3 border-white/10 text-white placeholder:text-white/25 focus:border-gold/50 focus:ring-gold/20 font-body resize-none ${errorBorder("message")}`}
                   />
+                  <FieldError field="message" />
                 </div>
 
                 {/* Submit */}
